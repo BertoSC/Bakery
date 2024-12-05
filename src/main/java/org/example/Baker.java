@@ -11,7 +11,7 @@ public class Baker implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        while (tomarNumero.getAtendidos()<=100) {
             try {
                 Random random = new Random();
                 int tiempoServicio = random.nextInt(1001);

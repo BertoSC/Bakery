@@ -4,6 +4,11 @@ import java.util.Random;
 
 public class TakeNumber {
     private int numeroTicket = 0;
+
+    public synchronized int getAtendidos() {
+        return atendidos;
+    }
+
     private int atendidos =0;
 
 

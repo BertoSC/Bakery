@@ -13,7 +13,7 @@ public class Client implements Runnable {
 
     }
 
-    public int getClientNumber() {
+    public synchronized int getClientNumber() {
         return clientNumber;
     }
 
