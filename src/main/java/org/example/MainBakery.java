@@ -11,10 +11,16 @@ public class MainBakery {
         Thread thBaker = new Thread(bak);
         thBaker.start();
 
-        for (int i=0; i<100; i++){
-            Client c = new Client(tk);
+        for (int i=1; i<=100; i++){
+            Client c = new Client(tk, i);
             Thread client = new Thread(c);
             client.start();
+        }
+
+        try {
+            thBaker.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
     }

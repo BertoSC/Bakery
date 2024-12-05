@@ -3,31 +3,32 @@ package org.example;
 import java.util.Random;
 
 public class TakeNumber {
-    int machineNumber=0;
-    Boolean serving=false;
-    Boolean waiting;
-    int turn=1;
-        public synchronized int yourNumber(Client c) {
-        machineNumber++;
-        System.out.println("Customer "+Thread.currentThread().getName()+ " takes ticket: "+machineNumber);
-        return machineNumber;
+    private int numeroTicket = 0;
+    private int atendidos =0;
+
+
+    public synchronized void tomarTicket(Client cliente) throws InterruptedException {
+        numeroTicket++;
+        cliente.setNumeroTicket(numeroTicket);
+        System.out.println("Cliente"+ Thread.currentThread().getName()+ "toma ticket #" + numeroTicket);
+
     }
 
-    public synchronized void bake() throws InterruptedException {
-        while(machineNumber==0){
-            System.out.println("The baker is waiting for clients");
+    public synchronized void tomarPan(Client client) throws InterruptedException {
+        while (!(client.getNumeroTicket()==atendidos+1)){
             wait();
         }
-
-        System.out.println("The baker serves: "+turn);
+        System.out.println(client.getNumeroTicket()+ "ha recogido el pan con ticket "+client.getNumeroTicket());
         notifyAll();
     }
 
-    public synchronized void order(Client c) throws InterruptedException {
-        while(turn!=c.getClientNumber()){
-            wait();
-        }
-        System.out.println("Takes order");
-         notifyAll();
+    public synchronized void servirCliente() throws InterruptedException {
+            while (numeroTicket==0 || atendidos>numeroTicket) {
+                System.out.println("Empleado esperando (no hay clientes para servir)");
+                wait();
+            }
+            atendidos++;
+            notifyAll();
+
     }
 }

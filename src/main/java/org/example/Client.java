@@ -1,39 +1,42 @@
 package org.example;
 
-import javax.sound.sampled.Clip;
 import java.util.Random;
 
 public class Client implements Runnable {
-    private final static int MIN_WAIT=20000;
-    private final static int MAX_WAIT=40001;
-    TakeNumber tk;
-    int clientNumber=0;
+    private TakeNumber tomarNumero;
+    private int clientNumber;
+    private int numeroTicket;
 
-    public Client(TakeNumber tk){
-        this.tk=tk;
+    public Client(TakeNumber tomarNumero, int i) {
+        this.tomarNumero = tomarNumero;
+        this.clientNumber=i;
+
     }
 
-    public synchronized void setNumber(int n) {
-        this.clientNumber = n;
-    }
-
-    public synchronized int getClientNumber() {
+    public int getClientNumber() {
         return clientNumber;
+    }
+
+
+
+    public synchronized void setNumeroTicket(int numeroTicket) {
+        this.numeroTicket = numeroTicket;
+    }
+
+    public synchronized int getNumeroTicket() {
+        return numeroTicket;
     }
 
     @Override
     public void run() {
-        Random rm = new Random();
-        int waiting = rm.nextInt(MIN_WAIT, MAX_WAIT);
         try {
-            Thread.sleep(waiting);
-            tk.yourNumber(this);
-            tk.order(this);
-
+            Random random = new Random();
+            int tiempoEspera = random.nextInt(2000, 4001);
+            Thread.sleep(tiempoEspera);
+            tomarNumero.tomarTicket(this);
+            tomarNumero.tomarPan(this);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 }
